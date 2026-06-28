@@ -14,6 +14,8 @@ pub fn run(command: zed::SlashCommand, args: Vec<String>) -> zed::Result<zed::Sl
         "flutter-doctor" => cmd_doctor(),
         "flutter-create" => cmd_create(&args),
         "flutter-select-device" => cmd_select_device(&args),
+        "flutter-launch-emulator" => cmd_launch_emulator(&args),
+        "flutter-devtools" => cmd_devtools(),
         _ => Err(format!("未知的 flutter 命令: {}", command.name)),
     }
 }
@@ -140,6 +142,35 @@ fn cmd_select_device(args: &[String]) -> zed::Result<zed::SlashCommandOutput> {
             sections: vec![],
         })
     }
+}
+
+/// 启动模拟器
+fn cmd_launch_emulator(args: &[String]) -> zed::Result<zed::SlashCommandOutput> {
+    if let Some(emulator_id) = get_arg_value(args, "--id") {
+        Ok(zed::SlashCommandOutput {
+            text: format!("正在启动模拟器: {}。\n请等待模拟器启动完成...", emulator_id),
+            sections: vec![],
+        })
+    } else {
+        Ok(zed::SlashCommandOutput {
+            text: "使用方式：/flutter:launch-emulator --id=<emulator_id>\n\n请先运行 /flutter:emulators 查看可用模拟器列表。".to_string(),
+            sections: vec![],
+        })
+    }
+}
+
+/// 打开 Flutter DevTools
+fn cmd_devtools() -> zed::Result<zed::SlashCommandOutput> {
+    Ok(zed::SlashCommandOutput {
+        text: "正在启动 Flutter DevTools...
+DevTools 将在浏览器中打开。
+如需指定页面，请使用：
+  /flutter:devtools --page=inspector
+  /flutter:devtools --page=performance
+  /flutter:devtools --page=memory
+  /flutter:devtools --page=network".to_string(),
+        sections: vec![],
+    })
 }
 
 /// 从参数列表中提取指定键的值

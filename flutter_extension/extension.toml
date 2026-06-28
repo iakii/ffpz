@@ -75,14 +75,14 @@ description = "运行 Flutter Doctor 检查环境"
 name = "Flutter: Create Project"
 description = "创建新的 Flutter 项目"
 
-[slash_commands.flutter-devices]
+[slash_commands.flutter-select-device]
 name = "Flutter: Select Device"
 description = "切换当前选中的设备"
 
-[slash_commands.flutter-devices]
+[slash_commands.flutter-launch-emulator]
 name = "Flutter: Launch Emulator"
 description = "启动模拟器"
 
-[slash_commands.flutter-devices]
+[slash_commands.flutter-devtools]
 name = "Flutter: DevTools"
 description = "打开 Flutter DevTools"
