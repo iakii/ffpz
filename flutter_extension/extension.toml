@@ -3,86 +3,17 @@ name = "Dart & Flutter"
 version = "0.1.0"
 schema_version = 1
 authors = ["Zed Flutter Plugin Team"]
-description = "Dart and Flutter development support with device management, hot reload, and debugging."
-repository = "https://github.com/your-org/zed-flutter-plugin"
+description = "Dart and Flutter development support."
+repository = "https://github.com/iakii/zed-flutter-plugin"
 
-# ── Tree-sitter 语法 ─────────────────────────────────
-[grammars.dart]
-repository = "https://github.com/UserNobody14/tree-sitter-dart"
-commit = "6922ad29141e819773d6ffb0c6d2c27adefb5acc"
-
-# ── 语言服务器（标准 Dart LSP） ──────────────────────
 [language_servers.dart]
 name = "Dart LSP"
 language = "Dart"
 languages = ["Dart"]
 
-[language_servers.dart.language_ids]
-"Dart" = "dart"
+[grammars.dart]
+repository = "https://github.com/UserNobody14/tree-sitter-dart"
+commit = "6922ad29141e819773d6ffb0c6d2c27adefb5acc"
 
-# ── 语言服务器（Flutter Bridge - 管理 flutter daemon） ─
-[language_servers.flutter-bridge]
-name = "Flutter Bridge"
-language = "Dart"
-languages = ["Dart"]
-
-[language_servers.flutter-bridge.language_ids]
-"Dart" = "dart"
-
-# ── DAP 调试适配器（Flutter 调试） ──────────────────
 [debug_adapters.flutter]
-name = "Flutter"
-# 默认调试配置模板
-
-# ── Slash 命令 ──────────────────────────────────────
-[slash_commands.flutter-devices]
-name = "Flutter: Devices"
-description = "显示已连接的 Flutter 设备列表"
-
-[slash_commands.flutter-run]
-name = "Flutter: Run"
-description = "在选中设备上启动 Flutter 应用"
-
-[slash_commands.flutter-hot-reload]
-name = "Flutter: Hot Reload"
-description = "热重载当前运行的 Flutter 应用"
-
-[slash_commands.flutter-hot-restart]
-name = "Flutter: Hot Restart"
-description = "热重启当前运行的 Flutter 应用"
-
-[slash_commands.flutter-stop]
-name = "Flutter: Stop"
-description = "停止当前运行的 Flutter 应用"
-
-[slash_commands.flutter-pub-get]
-name = "Flutter: Pub Get"
-description = "获取项目依赖包"
-
-[slash_commands.flutter-pub-upgrade]
-name = "Flutter: Pub Upgrade"
-description = "升级项目依赖包"
-
-[slash_commands.flutter-clean]
-name = "Flutter: Clean"
-description = "清理 Flutter 构建产物"
-
-[slash_commands.flutter-doctor]
-name = "Flutter: Doctor"
-description = "运行 Flutter Doctor 检查环境"
-
-[slash_commands.flutter-create]
-name = "Flutter: Create Project"
-description = "创建新的 Flutter 项目"
-
-[slash_commands.flutter-select-device]
-name = "Flutter: Select Device"
-description = "切换当前选中的设备"
-
-[slash_commands.flutter-launch-emulator]
-name = "Flutter: Launch Emulator"
-description = "启动模拟器"
-
-[slash_commands.flutter-devtools]
-name = "Flutter: DevTools"
-description = "打开 Flutter DevTools"
+schema = "debug_adapter_schemas/flutter.json"

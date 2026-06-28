@@ -1,41 +1,74 @@
 {
-  "version": "0.2.0",
-  "configurations": [
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "Flutter Debug Configuration",
+  "description": "Configuration for the Flutter debug adapter in Zed",
+  "type": "object",
+  "properties": {
+    "adapter": {
+      "type": "string",
+      "const": "flutter"
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable name for this debug configuration"
+    },
+    "request": {
+      "type": "string",
+      "enum": ["launch", "attach"],
+      "default": "launch"
+    },
+    "program": {
+      "type": "string",
+      "description": "Path to the main Dart file to run (e.g., 'lib/main.dart')"
+    },
+    "cwd": {
+      "type": "string",
+      "description": "Working directory for the debug session",
+      "default": "${workspaceFolder}"
+    },
+    "args": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Additional arguments to pass to the Flutter app",
+      "default": []
+    },
+    "deviceId": {
+      "type": "string",
+      "description": "Target device ID (e.g., 'chrome', 'macos', 'emulator-5554')"
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables for the debug session"
+    },
+    "vmServiceUri": {
+      "type": "string",
+      "description": "VM Service URI for attach mode (e.g., ws://127.0.0.1:8181/ws)",
+      "pattern": "^wss?://"
+    },
+    "autoLaunchDevTools": {
+      "type": "boolean",
+      "description": "Automatically launch DevTools when debugging starts",
+      "default": false
+    },
+    "stopOnEntry": {
+      "type": "boolean",
+      "default": false
+    },
+    "hotReloadOnSave": {
+      "type": "boolean",
+      "description": "Trigger hot reload when files are saved",
+      "default": true
+    }
+  },
+  "required": ["adapter", "label"],
+  "allOf": [
     {
-      "name": "Flutter: Debug",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart",
-      "flutterMode": "debug",
-      "noDebug": false,
-      "deviceId": "",
-      "args": [],
-      "cwd": ".",
-      "env": {}
+      "if": { "properties": { "request": { "const": "launch" } } },
+      "then": { "required": ["program"] }
     },
     {
-      "name": "Flutter: Profile",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart",
-      "flutterMode": "profile",
-      "deviceId": ""
-    },
-    {
-      "name": "Flutter: Release",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart",
-      "flutterMode": "release",
-      "deviceId": ""
-    },
-    {
-      "name": "Flutter: Run (no debug)",
-      "type": "dart",
-      "request": "launch",
-      "program": "lib/main.dart",
-      "noDebug": true,
-      "deviceId": ""
+      "if": { "properties": { "request": { "const": "attach" } } },
+      "then": { "required": ["vmServiceUri"] }
     }
   ]
 }

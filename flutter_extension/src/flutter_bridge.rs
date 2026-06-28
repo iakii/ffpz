@@ -4,7 +4,7 @@ use zed_extension_api as zed;
 ///
 /// Bridge Server 是一个原生二进制程序，负责管理 flutter daemon 进程。
 /// 通过 GitHub Releases 自动下载，或使用本地已安装的版本。
-const BRIDGE_SERVER_REPO: &str = "your-org/zed-flutter-plugin";
+const BRIDGE_SERVER_REPO: &str = "iakii/zed-flutter-plugin";
 
 /// 获取 Bridge Server 启动命令
 ///
@@ -67,7 +67,11 @@ fn get_or_download_bridge_server(worktree: &zed::Worktree) -> zed::Result<String
         .ok_or_else(|| format!("未找到 {} 平台的 Bridge Server 二进制", platform_tag))?;
 
     // 下载二进制
-    zed::download_file(&asset.download_url, &cached_path, zed::DownloadedFileType::Uncompressed)?;
+    zed::download_file(
+        &asset.download_url,
+        &cached_path,
+        zed::DownloadedFileType::Uncompressed,
+    )?;
 
     // 在非 Windows 平台上设置可执行权限
     if os != zed::Os::Windows {

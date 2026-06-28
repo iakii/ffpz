@@ -10,6 +10,9 @@ target/
 # WASM 构建产物
 *.wasm
 
+# 本地打包产物
+build/
+
 # 缓存
 flutter_bridge_cache/
 .download/

@@ -1,41 +1,6 @@
-# Dart 语言配置
-#
-# 使用 tree-sitter-dart 语法解析器。
-# 参考：https://github.com/UserNobody14/tree-sitter-dart
-
 name = "Dart"
 grammar = "dart"
 path_suffixes = ["dart"]
-
-# 自动关闭引号和括号对
-brackets = [
-    { pair = "(", close = true, surround = true, close_priority = -1 },
-    { pair = "{", close = true, surround = true, close_priority = -1 },
-    { pair = "[", close = true, surround = true, close_priority = -1 },
-    { pair = '"', close = true, surround = true, close_priority = -1 },
-    { pair = "'", close = true, surround = true, close_priority = -1 },
-    { pair = "`", close = true, surround = true, close_priority = -1 },
-    { pair = "/*", close = true, surround = true },
-    { pair = "{", close = false, surround = true, close_priority = -1 },
-]
-
-# 自动缩进设置
-auto_indent = true
 line_comment = "//"
-
-# 折叠配置
-fold = true
-
-# 最大行长度（用于格式化提示）
-max_line_len = 80
-
-# 首选缩进宽度
+autoclose_before = ";:.,=}])>"
 tab_size = 2
-
-# 作用于命名规则
-scope_opt_ins = ["indentation"]
-
-# 语言特征配置
-[features]
-show_code_actions = true
-show_inline_completions = true

@@ -20,7 +20,7 @@
 从 Zed 扩展商店搜索 "Dart & Flutter" 安装。
 
 或者手动安装：
-1. 从 [Releases](https://github.com/your-org/zed-flutter-plugin/releases) 下载最新版本
+1. 从 [Releases](https://github.com/iakii/zed-flutter-plugin/releases) 下载最新版本
 2. 解压到 Zed 的扩展目录
 
 ## 使用方法
