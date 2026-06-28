@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安装 Rust 工具链
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+      - name: 构建 WASM 扩展
+        run: cargo build --package flutter-extension --target wasm32-wasip1 --release
+      - name: 打包扩展
+        run: |
+          mkdir -p dist/flutter_extension
+          cp target/wasm32-wasip1/release/flutter_extension.wasm dist/flutter_extension/
+          cp flutter_extension/extension.toml dist/flutter_extension/
+          cp -r flutter_extension/languages dist/flutter_extension/
+          cp -r flutter_extension/snippets dist/flutter_extension/
+          cp -r flutter_extension/debug_adapter_schemas dist/flutter_extension/
+          cd dist && tar czf flutter-zed-extension.tar.gz flutter_extension/
+      - name: 上传 WASM 构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-extension
+          path: dist/flutter-zed-extension.tar.gz
+
+  build-bridge:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            tag: linux-x86_64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            tag: macos-aarch64
+          - os: macos-13
+            target: x86_64-apple-darwin
+            tag: macos-x86_64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            tag: windows-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安装 Rust 工具链
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - name: 构建 Bridge Server
+        run: cargo build --package flutter-bridge-server --target ${{ matrix.target }} --release
+      - name: 重命名二进制文件
+        shell: bash
+        run: |
+          BINARY="target/${{ matrix.target }}/release/flutter-bridge-server"
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then
+            BINARY="${BINARY}.exe"
+          fi
+          cp "$BINARY" "flutter-bridge-server-${{ matrix.tag }}"
+      - name: 上传二进制文件
+        uses: actions/upload-artifact@v4
+        with:
+          name: bridge-server-${{ matrix.tag }}
+          path: flutter-bridge-server-*
+
+  release:
+    needs: [build-wasm, build-bridge]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - name: 创建 GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            flutter-zed-extension.tar.gz
+            flutter-bridge-server-*
+          draft: true
+          generate_release_notes: true

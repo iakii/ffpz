@@ -1,0 +1,19 @@
+# Rust 构建产物
+target/
+**/*.rs.bk
+
+# 编辑器
+.idea/
+*.swp
+*.swo
+
+# WASM 构建产物
+*.wasm
+
+# 缓存
+flutter_bridge_cache/
+.download/
+
+# 操作系统
+.DS_Store
+Thumbs.db

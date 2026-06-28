@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 Rust 工具链
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-wasip1
+          components: clippy, rustfmt
+
+      - name: 缓存 Cargo 依赖
+        uses: Swatinem/rust-cache@v2
+
+      - name: 代码格式检查
+        run: cargo fmt --all --check
+
+      - name: Clippy 检查
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: 构建 Bridge Server
+        run: cargo build --package flutter-bridge-server --release
+
+      - name: 构建 WASM 扩展
+        run: cargo build --package flutter-extension --target wasm32-wasip1 --release
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 安装 Rust 工具链
+        uses: dtolnay/rust-toolchain@stable
+      - name: 缓存 Cargo 依赖
+        uses: Swatinem/rust-cache@v2
+      - name: 运行测试
+        run: cargo test --workspace
