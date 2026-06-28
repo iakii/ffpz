@@ -10,6 +10,8 @@
 EXTENSION_DIR = flutter_extension
 BRIDGE_PKG = flutter-bridge-server
 EXTENSION_PKG = flutter-extension
+# Cargo 将 crate 名中的连字符转换为下划线作为输出文件名
+EXTENSION_WASM = flutter_extension.wasm
 TARGET_DIR = target
 WASM_TARGET = wasm32-wasip1
 BUILD_DIR = build
@@ -39,7 +41,7 @@ extension:
 	@echo "=== 打包扩展 ==="
 	rm -rf $(BUILD_DIR)
 	mkdir -p $(BUILD_DIR)/flutter_extension
-	cp $(TARGET_DIR)/$(WASM_TARGET)/release/$(EXTENSION_PKG).wasm $(BUILD_DIR)/flutter_extension/
+	cp $(TARGET_DIR)/$(WASM_TARGET)/release/$(EXTENSION_WASM) $(BUILD_DIR)/flutter_extension/
 	cp $(EXTENSION_DIR)/extension.toml $(BUILD_DIR)/flutter_extension/
 	cp -r $(EXTENSION_DIR)/languages $(BUILD_DIR)/flutter_extension/
 	cp -r $(EXTENSION_DIR)/snippets $(BUILD_DIR)/flutter_extension/
