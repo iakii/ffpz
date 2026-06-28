@@ -2,6 +2,7 @@ use zed_extension_api as zed;
 
 mod dart_lsp;
 mod dap;
+mod slash_commands;
 
 struct FlutterExtension;
 
@@ -68,6 +69,16 @@ impl zed::Extension for FlutterExtension {
         _config: zed::DebugConfig,
     ) -> zed::Result<zed::DebugScenario> {
         dap::config_to_scenario()
+    }
+
+    /// Slash 命令
+    fn run_slash_command(
+        &self,
+        command: zed::SlashCommand,
+        args: Vec<String>,
+        _worktree: Option<&zed::Worktree>,
+    ) -> zed::Result<zed::SlashCommandOutput> {
+        slash_commands::run(command, args)
     }
 }
 

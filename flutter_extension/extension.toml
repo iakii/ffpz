@@ -17,3 +17,47 @@ commit = "6922ad29141e819773d6ffb0c6d2c27adefb5acc"
 
 [debug_adapters.flutter]
 schema = "debug_adapter_schemas/flutter.json"
+
+[slash_commands.flutter-run]
+description = "在设备上启动 Flutter 应用"
+requires_argument = false
+
+[slash_commands.flutter-devices]
+description = "显示已连接的设备列表"
+requires_argument = false
+
+[slash_commands.flutter-hot-reload]
+description = "热重载当前运行的应用"
+requires_argument = false
+
+[slash_commands.flutter-hot-restart]
+description = "热重启当前运行的应用"
+requires_argument = false
+
+[slash_commands.flutter-pub-get]
+description = "获取项目依赖"
+requires_argument = false
+
+[slash_commands.flutter-pub-upgrade]
+description = "升级项目依赖"
+requires_argument = false
+
+[slash_commands.flutter-clean]
+description = "清理构建产物"
+requires_argument = false
+
+[slash_commands.flutter-doctor]
+description = "运行 Flutter Doctor"
+requires_argument = false
+
+[slash_commands.flutter-create]
+description = "创建新的 Flutter 项目"
+requires_argument = false
+
+[slash_commands.flutter-stop]
+description = "停止当前运行的应用"
+requires_argument = false
+
+[slash_commands.flutter-devtools]
+description = "打开 Flutter DevTools"
+requires_argument = false

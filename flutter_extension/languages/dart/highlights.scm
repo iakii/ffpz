@@ -1,221 +1,216 @@
-; ── Dart Tree-sitter 语法高亮查询 ──
-; 基于 tree-sitter-dart 语法
-; 参考：https://github.com/UserNobody14/tree-sitter-dart
+; Variable
+(identifier) @variable
 
-; ── 关键字 ──
+; Keywords
+; --------------------
 [
-  "abstract"
-  "as"
-  "assert"
-  "async"
-  "await"
-  "base"
-  "break"
-  "case"
-  "catch"
-  "class"
-  "const"
-  "continue"
-  "covariant"
-  "default"
-  "deferred"
-  "do"
-  "dynamic"
-  "else"
-  "enum"
-  "export"
-  "extends"
-  "extension"
-  "external"
-  "factory"
-  "false"
-  "final"
-  "finally"
-  "for"
-  "get"
-  "hide"
-  "if"
-  "implements"
-  "import"
-  "in"
-  "interface"
-  "is"
-  "late"
-  "library"
-  "mixin"
-  "new"
-  "null"
-  "on"
-  "operator"
-  "part"
-  "required"
-  "rethrow"
-  "return"
-  "sealed"
-  "set"
-  "show"
-  "static"
-  "super"
-  "switch"
-  "sync"
-  "this"
-  "throw"
-  "true"
-  "try"
-  "typedef"
-  "var"
-  "void"
-  "when"
-  "while"
-  "with"
-  "yield"
+    (assert_builtin)
+    (break_builtin)
+    (const_builtin)
+    (part_of_builtin)
+    (rethrow_builtin)
+    (void_type)
+    "abstract"
+    "as"
+    "async"
+    "async*"
+    "await"
+    "base"
+    "case"
+    "catch"
+    "class"
+    "continue"
+    "covariant"
+    "default"
+    "deferred"
+    "do"
+    "else"
+    "enum"
+    "export"
+    "extends"
+    "extension"
+    "external"
+    "factory"
+    "final"
+    "finally"
+    "for"
+    "Function"
+    "hide"
+    "if"
+    "implements"
+    "import"
+    "in"
+    "interface"
+    "is"
+    "late"
+    "library"
+    "mixin"
+    "new"
+    "on"
+    "part"
+    "required"
+    "return"
+    "sealed"
+    "show"
+    "static"
+    "super"
+    "switch"
+    "sync*"
+    "throw"
+    "try"
+    "typedef"
+    "var"
+    "when"
+    "while"
+    "with"
+    "yield"
 ] @keyword
 
-; ── 字符串 ──
-(string_literal) @string
-(interpolation_expression) @embedded
+; Methods
+((identifier) @function
+ (#match? @function "^_?[a-z]")
+ . (selector . (argument_part))) @function
+
+; Operators and Tokens
+(template_substitution
+  "$" @punctuation.special
+  "{" @punctuation.special
+  "}" @punctuation.special) @none
+(template_substitution
+  "$" @punctuation.special
+  (identifier_dollar_escaped) @variable) @none
 (escape_sequence) @string.escape
 
-; ── 数字 ──
-(number_literal) @number
-
-; ── 注释 ──
-(line_comment) @comment
-(block_comment) @comment
-(documentation_comment) @comment.doc
-
-; ── 函数与方法 ──
-(function_declaration
-  name: (identifier) @function)
-(method_declaration
-  name: (identifier) @function.method)
-(constructor_declaration
-  name: (identifier) @constructor)
-
-; ── 参数 ──
-(parameters
-  (parameter
-    name: (identifier) @parameter))
-(default_parameter
-  name: (identifier) @parameter)
-
-; ── 类 ──
-(class_declaration
-  name: (identifier) @type)
-(mixin_declaration
-  name: (identifier) @type)
-(enum_declaration
-  name: (identifier) @type)
-(extension_declaration
-  name: (identifier) @type)
-(typedef_definition
-  name: (identifier) @type)
-
-; ── 属性 ──
-(field_declaration
-  name: (identifier) @property)
-(getter_signature
-  name: (identifier) @property)
-(setter_signature
-  name: (identifier) @property)
-
-; ── 变量 ──
-(initialized_variable_declaration
-  name: (identifier) @variable)
-(final_declaration
-  name: (identifier) @variable)
-
-; ── 运算符 ──
 [
-  "+"
-  "-"
-  "*"
-  "/"
-  "%"
-  "="
-  "=="
-  "!="
-  "<"
-  ">"
-  "<="
-  ">="
-  "&&"
-  "||"
-  "!"
-  "&"
-  "|"
-  "^"
-  "~"
-  "<<"
-  ">>"
-  ">>>"
-  "+="
-  "-="
-  "*="
-  "/="
-  "%="
-  "&="
-  "|="
-  "^="
-  "<<="
-  ">>="
-  ">>>="
-  "??"
-  "??="
-  "?"
-  ":"
-  "."
-  ".."
-  "?."
-  "->"
-  "=>"
+ "@"
+ "=>"
+ ".."
+ "??"
+ "=="
+ "?"
+ ":"
+ "&&"
+ "%"
+ "<"
+ ">"
+ "="
+ ">="
+ "<="
+ "||"
+ "~/"
+ (increment_operator)
+ (is_operator)
+ (prefix_operator)
+ (equality_operator)
+ (additive_operator)
 ] @operator
 
-; ── 类型注解 ──
-(type_identifier) @type
-(qualified_type
-  (type_identifier) @type)
-
-; ── 元数据注解 ──
-(annotation
-  "@" @attribute
-  name: (identifier) @attribute)
-(annotation
-  "@" @attribute
-  name: (qualified_name) @attribute)
-
-; ── 泛型 ──
 (type_arguments
   "<" @punctuation.bracket
   ">" @punctuation.bracket)
 
-; ── 标点符号 ──
-[
-  ";"
-  ","
-  "."
-] @punctuation.delimiter
+(type_parameters
+  "<" @punctuation.bracket
+  ">" @punctuation.bracket)
 
-; ── 花括号 ──
 [
+  "("
+  ")"
+  "["
+  "]"
   "{"
   "}"
 ] @punctuation.bracket
 
-; ── 方括号 ──
+; Delimiters
 [
-  "["
-  "]"
-] @punctuation.bracket
+  ";"
+  "."
+  ","
+] @punctuation.delimiter
 
-; ── 圆括号 ──
+; Types
+(type_identifier) @type
+((type_identifier) @type.builtin
+  (#match? @type.builtin "^(int|double|String|bool|List|Set|Map|Runes|Symbol)$"))
+(class_definition
+  name: (identifier) @type)
+(constructor_signature
+  name: (identifier) @type)
+(scoped_identifier
+  scope: (identifier) @type)
+(function_signature
+  name: (identifier) @function)
+(getter_signature
+  "get" @keyword
+  (identifier) @function)
+(setter_signature
+  "set" @keyword
+  name: (identifier) @function)
+(operator_signature
+  "operator" @keyword)
+
+((scoped_identifier
+  scope: (identifier) @type
+  name: (identifier) @type)
+ (#match? @type "^[a-zA-Z]"))
+
+; Enums
+(enum_declaration
+  name: (identifier) @type)
+(enum_constant
+  name: (identifier) @identifier.constant)
+
+; Variables
+(inferred_type) @keyword
+((identifier) @type
+ (#match? @type "^_?[A-Z].*[a-z]"))
+("Function" @type)
+(this) @variable.builtin
+
+; Properties
+(unconditional_assignable_selector
+  (identifier) @property)
+(conditional_assignable_selector
+  (identifier) @property)
+(cascade_section
+  (cascade_selector
+    (identifier) @property))
+((selector
+  (unconditional_assignable_selector (identifier) @function))
+  (selector (argument_part (arguments))))
+(cascade_section
+  (cascade_selector (identifier) @function)
+  (argument_part (arguments)))
+
+; Assignments
+(assignment_expression
+  left: (assignable_expression) @variable)
+(this) @variable.builtin
+
+; Parameters
+(formal_parameter
+    name: (identifier) @identifier.parameter)
+(named_argument
+  (label (identifier) @identifier.parameter))
+
+; Literals
 [
-  "("
-  ")"
-] @punctuation.bracket
+    (hex_integer_literal)
+    (decimal_integer_literal)
+    (decimal_floating_point_literal)
+] @number
 
-; ── 标签 ──
-(label_declaration
-  name: (label) @label)
-(label_usage
-  name: (label) @label)
+(string_literal) @string
+(symbol_literal (identifier) @constant) @constant
+(true) @boolean
+(false) @boolean
+(null_literal) @constant.null
+
+(documentation_comment) @comment
+(comment) @comment
+
+; Annotations
+(annotation
+  "@" @attribute
+  name: (identifier) @attribute)
